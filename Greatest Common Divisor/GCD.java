@@ -4,7 +4,7 @@ public class GCD {
      * Computes the Greatest Common Divisor (GCD) of two integers
      * using Euclid's Algorithm.
      * 
-     * @param a The first integer
+     * @param a The first integer.
      * @param b The second integer.
      * @return The greatest common divisor between `a` and `b`.
      */
@@ -13,12 +13,16 @@ public class GCD {
         // Assigns `b` as the largest integer, and `a` as the smallest
         int tempB = Math.max(a, b);
         int tempA = Math.min(a, b);
-        a = tempA; // 153972
-        b = tempB; // 211848
+        a = tempA;
+        b = tempB;
 
-        // Euclid's algorithm relies on the fact that
-        // if there are two integers a and b such that 1 <= a <= b and
-        // b = aq + r, where 0 <= r <= a, then gcd⁡(b, a) = gcd⁡(a, r). 
+        // Euclid's algorithm relies on the fact that if there are two
+        // integers a and b such that 1 <= a <= b and b = aq + r,
+        // where 0 <= r <= a, then gcd⁡(b, a) = gcd⁡(a, r). 
+        //
+        // Note: This same algorithms can also be implemented using
+        // recursion. For the purposes of illustration, I have kept
+        // the while-loop implementation.
         int r = -1;
         while (r != 0) {
             int q = Math.floorDiv(b, a);
