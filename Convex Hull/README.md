@@ -5,7 +5,7 @@
 
 
 <div align="center">
-    <img src="/ConvexHullVisual.png" style="width: 375px; height: 375px" />
+    <img src="/Convex Hull/ConvexHullVisual.png" style="width: 375px; height: 375px" />
 </div>
 
 
