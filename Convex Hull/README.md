@@ -4,11 +4,11 @@
 > [Convex Hull - Wikipedia.org](https://en.wikipedia.org/wiki/Convex_hull)
 
 
-<div align="center">
-    <img src="/Convex Hull/ConvexHullVisual.png" style="width: 375px; height: 375px" />
-</div>
+<p align="center">
+    <img src="/Convex Hull/ConvexHullVisual.png" width="375px">
+</p>
 
 
-In layman's terms, the Convex Hull of a set of points **`S`** is the set of points `h` that enclose all other points in **`S`**. The shape formed when connecting all the points in `h` is a the Convex Polygon with the greatest are and lowest perimeter out of all the points in **`S`**.
+In layman's terms, the Convex Hull of a set of points **`S`** is the set of points `h` in **`S`** that enclose all other points in **`S`**. The shape formed when connecting all the points in `h` is a the Convex Polygon with the greatest area and the lowest perimeter out of all the points in **`S`**.
 
-From the figure above, points `1`, `2`, `3, 4`, and `5` are the points in the set **`S`** that form a Convex Hull of **`S`**.
+From the figure above, points `1`, `2`, `3`, `4`, and `5` are the points in the set that form the Convex Hull of **`S`**.
