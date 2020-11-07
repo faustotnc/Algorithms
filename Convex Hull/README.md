@@ -9,6 +9,6 @@
 </p>
 
 
-In layman's terms, the Convex Hull of a set of points **`S`** is the set of points `h` in **`S`** that enclose all other points in **`S`**. The shape formed when connecting all the points in `h` is a the Convex Polygon with the greatest area and the lowest perimeter out of all the points in **`S`**.
+In layman's terms, the Convex Hull of a set of points **`S`** is the set of points `h` in **`S`** that form a Convex Polygon **P** enclosing all other points in **`S`** such that the area of **P** is maximized and the perimeter is minimized.
 
-From the figure above, points `1`, `2`, `3`, `4`, and `5` are the points in the set that form the Convex Hull of **`S`**.
+From the figure above, points `1`, `2`, `3`, `4`, and `5` are the points in the set that form the Convex Hull of **`S`**. Adding any other points to the set will increase the perimeter of the polygon and will decrease its area.
