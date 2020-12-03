@@ -14,11 +14,11 @@ def DFS(graph, start, callback):
     visited = []
 
     def visit(node):
-        visited.append(node)
-        callback(node)
+        if (node not in visited):
+            visited.append(node)
+            callback(node)
 
-        for vertex in graph[node]:
-            if (vertex not in visited):
+            for vertex in graph[node]:
                 visit(vertex)
 
     visit(start)
@@ -34,4 +34,4 @@ myGraph = {
 }
 
 # Visit every node using DFS
-DFS(myGraph, 3, lambda vertex: print(vertex))
+DFS(myGraph, 1, lambda vertex: print(vertex))
