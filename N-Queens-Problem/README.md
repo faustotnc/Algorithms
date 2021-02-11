@@ -8,7 +8,7 @@ We must first generate a random starting state which places a queen in a random 
 
 ## Keywords
 - **Heuristics**: A *heuristic* is a measurement of how far away the current state is from the the goal state. In the case of the N-Queens problem, the goal state is to have 0 collisions, so the goal heuristic is 0. At any given state, the number of collisions represent the heuristic for that state.
-- **Neighboring States**: A *neighboring state* is the state in which the board would be if a single move is performed. With the Hill-Climbing algorithm, we look at all possible neighboring states, and chose the state that will produce the lowest heuristic. At any give moment, an `NxN` board will produce `N^2 - N` neighboring states.
+- **Neighboring States**: A *neighboring state* is the state in which the board would be if a single move is performed. With the Hill-Climbing algorithm, we look at all possible neighboring states, and choose the state that will produce the lowest heuristic. At any give state, an `NxN` board will produce `N^2 - N` neighboring states.
 - **Local Minima**: In the Hill-Climbing algorithm, a *local minima* is reached if the current state has a non-zero heuristic, and none of its neighboring states produce a lower heuristic. In other words, the algorithm cannot find a better solution than the current state.
 
 ## Example Execution
