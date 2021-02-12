@@ -1,4 +1,4 @@
-# N-Queens Problem
+# N-Queens Problem [👸🏽, 👸🏼, 👸🏾, ..., 👸🏻]
 The N-Queens problem requires that `N` queens be placed on a `NxN` board so that no queen occupies the same row, column or diagonal as another queen. The N-Queens problem can be solved using the Hill-Climbing algorithm with random restarts.
 
 ![Example Solution](Example.png)

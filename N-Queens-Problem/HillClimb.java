@@ -64,11 +64,11 @@ public class HillClimb {
                 System.out.println("Number of State Changes: " + stateChangeCount);
                 isSolved = true;
                 break;
-            } else {
-                // But if not, then we need to either restart the climb, or take a step forward.
-                System.out.print("Next Action: ");
             }
 
+            // But if not, then we need to either restart the climb, or take a step forward.
+            System.out.print("Next Action: ");
+            
             // If there are no better paths at this step, then we start the board.
             if (betterPathsCount == 0) {
                 restartClimb();

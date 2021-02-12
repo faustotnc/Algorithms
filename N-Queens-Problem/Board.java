@@ -67,7 +67,7 @@ public class Board {
     public Board moveQueenTo(int queen, int row) {
         if (row >= size) {
             System.out.println("Tried moving queen #" + queen + " to row #" + row + ".");
-            throw new Error("A queen can only be between rows 0 and " + size + ".");
+            throw new Error("A queen can only be between rows 0 and " + (size - 1) + ".");
         }
         board[queen] = row;
         return this;
@@ -139,14 +139,21 @@ public class Board {
         for (int j = 0; j < size; j++) {
             if (queen != j) {
                 int jthQueenRow = board[j];
-                boolean collides1stDiagonal = jthQueenRow == CurrQueenRow - (j - queen);
-                boolean collides2ndDiagonal = jthQueenRow == CurrQueenRow + (j - queen);
-                boolean collidesHorizontal  = jthQueenRow == CurrQueenRow;
 
-                if (collidesHorizontal || collides1stDiagonal || collides2ndDiagonal) {
+                // Horizontal collision
+                if (jthQueenRow == CurrQueenRow) {
                     collisions++;
                     continue;
                 }
+
+                // Collision along the negative diagonal, that is, the diagonal line that starts at
+                // the top left and ends at the bottom right
+                boolean collides1stDiagonal = jthQueenRow == CurrQueenRow + (j - queen);
+                // Collision along the positive diagonal, that is, the diagonal line that starts at
+                // the bottom left and ends at the top right
+                boolean collides2ndDiagonal = jthQueenRow == CurrQueenRow - (j - queen);
+                // Checks for diagonal collisions
+                if (collides1stDiagonal || collides2ndDiagonal) collisions++;
             }
         }
 
