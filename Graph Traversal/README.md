@@ -1,4 +1,4 @@
-# Graph Traversal 🌿
+# Graph Traversal 🌳
 When it comes to visiting every vertex in a graph (traversing), there are two main algorithms: **Depth-First-Search** and **Breadth-First-Search**.
 
 As defined by Wikipedia:
