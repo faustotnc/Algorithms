@@ -3,18 +3,19 @@ import java.util.Random;
 /**
  * The board in an NxN chess board with N queens.
  * 
- * The queens are allowed to move along the rows of their columns (i.e., vertically),
- * but not horizontally nor diagonally.
+ * The queens are allowed to move along the rows of their columns (i.e.,
+ * vertically), but not horizontally nor diagonally.
  * 
- * We are interested in finding a state of the board where none of the queens collide with
- * each other diagonally or horizontally. We don't care about vertical collisions since the
- * queens are unique to their columns.
+ * We are interested in finding a state of the board where none of the queens
+ * collide with each other diagonally or horizontally. We don't care about
+ * vertical collisions since the queens are unique to their columns.
  * 
  * @author Fausto German
  * @version Feb 10th, 2021
  */
 public class Board {
     public final int size;
+    GraphicBoard graphicBoard;
 
     // The board is represented with a 1-dimensional array, where
     // the indices represent a queen's column, while the items
@@ -23,12 +24,14 @@ public class Board {
 
     /**
      * Initializes the board.
+     * 
      * @param size The size of the board.
      */
-    public Board(int size) { 
+    public Board(int size) {
         this.size = size;
         this.board = new int[size];
         this.reset();
+        this.graphicBoard = new GraphicBoard(this);
     }
 
     /**
@@ -61,7 +64,7 @@ public class Board {
      * Moves a queen to a row position along its column.
      * 
      * @param queen The queen to be moved.
-     * @param row The row where the queen will be moved.
+     * @param row   The row where the queen will be moved.
      * @return The current state of the board.
      */
     public Board moveQueenTo(int queen, int row) {
@@ -77,15 +80,15 @@ public class Board {
      * Gets the heuristics of a move, without changing the state of the board.
      * 
      * @param queen The queen that would be moved.
-     * @param row The row where the queen would be moved.
+     * @param row   The row where the queen would be moved.
      * @return The heuristics of the board if the move is performed.
      */
     public int getMoveHeuristics(int queen, int row) {
         int originalRow = board[queen];
-    
+
         int heuristics = this.moveQueenTo(queen, row).getTotalCollisions();
         this.moveQueenTo(queen, originalRow);
-        
+
         return heuristics;
     }
 
@@ -99,11 +102,13 @@ public class Board {
 
         for (int queen = 0; queen < size; queen++) {
             int qRow = board[queen];
-            
+
             for (int nRow = 0; nRow < size; nRow++) {
                 int base = queen * (size - 1);
-                if (nRow < qRow) states[base + nRow] = getMoveHeuristics(queen, nRow);
-                if (nRow > qRow) states[base + (nRow - 1)] = getMoveHeuristics(queen, nRow);
+                if (nRow < qRow)
+                    states[base + nRow] = getMoveHeuristics(queen, nRow);
+                if (nRow > qRow)
+                    states[base + (nRow - 1)] = getMoveHeuristics(queen, nRow);
             }
         }
 
@@ -146,14 +151,17 @@ public class Board {
                     continue;
                 }
 
-                // Collision along the negative diagonal, that is, the diagonal line that starts at
+                // Collision along the negative diagonal, that is, the diagonal line that starts
+                // at
                 // the top left and ends at the bottom right
                 boolean collides1stDiagonal = jthQueenRow == CurrQueenRow + (j - queen);
-                // Collision along the positive diagonal, that is, the diagonal line that starts at
+                // Collision along the positive diagonal, that is, the diagonal line that starts
+                // at
                 // the bottom left and ends at the top right
                 boolean collides2ndDiagonal = jthQueenRow == CurrQueenRow - (j - queen);
                 // Checks for diagonal collisions
-                if (collides1stDiagonal || collides2ndDiagonal) collisions++;
+                if (collides1stDiagonal || collides2ndDiagonal)
+                    collisions++;
             }
         }
 
