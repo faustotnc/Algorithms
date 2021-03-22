@@ -8,7 +8,7 @@
  */
 public class Main {
     // Creates a board
-    private static Board board = new Board(32);
+    private static Board board = new Board(24);
     // Initializes the Hill-Climbing algorithm
     private static HillClimb hillClimb = new HillClimb(board);
 

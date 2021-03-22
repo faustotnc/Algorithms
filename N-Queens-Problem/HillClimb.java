@@ -62,8 +62,7 @@ public class HillClimb {
             board.print();
 
             // If the current heuristics is zero (i.e, there are no collisions at this
-            // step),
-            // we have found a solution, and the loop can be stopped.
+            // step), we have found a solution, and the loop can be stopped.
             if (currentHeuristics == 0) {
                 System.out.println("\u001b[34;1m\nSOLUTION FOUND!\u001b[0m");
                 System.out.println("Number of Resets: " + resetCount);

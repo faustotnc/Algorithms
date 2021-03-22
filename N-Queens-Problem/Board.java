@@ -77,7 +77,7 @@ public class Board {
     }
 
     /**
-     * Gets the heuristics of a move, without changing the state of the board.
+     * Gets the heuristics of a move without changing the state of the board.
      * 
      * @param queen The queen that would be moved.
      * @param row   The row where the queen would be moved.
@@ -105,10 +105,8 @@ public class Board {
 
             for (int nRow = 0; nRow < size; nRow++) {
                 int base = queen * (size - 1);
-                if (nRow < qRow)
-                    states[base + nRow] = getMoveHeuristics(queen, nRow);
-                if (nRow > qRow)
-                    states[base + (nRow - 1)] = getMoveHeuristics(queen, nRow);
+                if (nRow < qRow) states[base + nRow] = getMoveHeuristics(queen, nRow);
+                if (nRow > qRow) states[base + (nRow - 1)] = getMoveHeuristics(queen, nRow);
             }
         }
 
@@ -152,12 +150,10 @@ public class Board {
                 }
 
                 // Collision along the negative diagonal, that is, the diagonal line that starts
-                // at
-                // the top left and ends at the bottom right
+                // at the top left and ends at the bottom right
                 boolean collides1stDiagonal = jthQueenRow == CurrQueenRow + (j - queen);
                 // Collision along the positive diagonal, that is, the diagonal line that starts
-                // at
-                // the bottom left and ends at the top right
+                // at the bottom left and ends at the top right
                 boolean collides2ndDiagonal = jthQueenRow == CurrQueenRow - (j - queen);
                 // Checks for diagonal collisions
                 if (collides1stDiagonal || collides2ndDiagonal)
