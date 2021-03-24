@@ -171,6 +171,6 @@ public class Node implements Comparable<Node> {
      * String version of this node.
      */
     public String toString() {
-        return "Node [" + row + ", " + col + "](" + f + ") – G: " + g + " H: " + h;
+        return "Node [" + row + ", " + col + "] (F: " + f + ") – G: " + g + " H: " + h;
     }
 }

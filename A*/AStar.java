@@ -15,6 +15,8 @@ public class AStar {
     private PriorityQueue<Node> openList = new PriorityQueue<>();
     // The closed list represents the nodes that we have visited.
     private ArrayList<Node> closedList = new ArrayList<>();
+    // The final path generated once the search is done
+    private ArrayList<Node> finalPath = new ArrayList<>();
 
     /**
      * A new instance of the A* path-finding algorithm.
@@ -49,8 +51,16 @@ public class AStar {
                     // is not null, then we have found the goal
                     if (current.equals(board.goalNode)) {
                         System.out.println("FOUND A SOLUTION!!!\n\nSolution Path:");
-                        drawFinalPath(current);
                         foundGoal = true;
+
+                        // Shows the path on the board
+                        drawFinalPath(current);
+
+                        // Prints the path to the console
+                        for (int i = finalPath.size() - 1; i >= 0; i--) {
+                            Node node = finalPath.get(i);
+                            System.out.println((finalPath.size() - i) + ") " + node);
+                        }
 
                         // Do one last repaint and cancel the TimerTask
                         board.repaint();
@@ -110,6 +120,32 @@ public class AStar {
 
                         // Set color for nodes to be visited.
                         neighbor.tile().setBackground(Color.decode("#e6a475"));
+                    } else {
+                        Node prevParent = neighbor.getParent();
+                        int prevG = neighbor.getG();
+
+                        // Re-compute the values of the neighbor node
+                        // relative to the current node
+                        neighbor.setParent(current);
+                        int newG = this.getNodeGVal(neighbor);
+
+                        // If moving through this node with the current node as its
+                        // parent does not produce a better path, discard the changes
+                        // and revert back to the previous state.
+                        if (newG >= prevG) {
+                            neighbor.setG(prevG);
+                            neighbor.setParent(prevParent);
+                        } else {
+                            // Otherwise, if the new path produces a better g-value,
+                            // the we update the neighbor node while keeping the current
+                            // node as its parent.
+                            neighbor.setG(newG);
+
+                            // Reposition the node in the MinHeap according
+                            // to the new G value
+                            openList.remove(neighbor);
+                            openList.add(neighbor);
+                        }
                     }
                 }
             }
@@ -128,14 +164,21 @@ public class AStar {
         h *= 10;
         neighbor.setH(h);
 
-        if (neighbor.getParent() != null) {
-            double xDist = Math.pow(neighbor.getRow() - neighbor.getParent().getRow(), 2);
-            double yDist = Math.pow(neighbor.getCol() - neighbor.getParent().getCol(), 2);
-            double dist = 10 * Math.sqrt(xDist + yDist);
-            neighbor.setG((int) (neighbor.getParent().getG() + dist));
-        } else {
-            neighbor.setG(0);
-        }
+        // Computes the G-Value
+        neighbor.setG((neighbor.getParent() != null) ? this.getNodeGVal(neighbor) : 0);
+    }
+
+    /**
+     * Calculates the distance between the provided node and the starting node.
+     * 
+     * @param node The node whose distance will be computed.
+     * @return The distance between the provided node and the starting node.
+     */
+    private int getNodeGVal(Node node) {
+        double xDist = Math.pow(node.getRow() - node.getParent().getRow(), 2);
+        double yDist = Math.pow(node.getCol() - node.getParent().getCol(), 2);
+        double dist = 10 * Math.sqrt(xDist + yDist);
+        return (int) (node.getParent().getG() + dist);
     }
 
     /**
@@ -146,10 +189,11 @@ public class AStar {
      * @param node  The current node in the recursive step.
      */
     private void drawFinalPath(Node node) {
-        System.out.println(node);
+        finalPath.add(node);
 
         // If there are no more parents to travel through, stop the recursive calls.
-        if (node.getParent() == null) return;
+        if (node.getParent() == null)
+            return;
 
         Color color = Color.decode((node == board.goalNode) ? "#fee22a" : "#6db26d");
         node.tile().setBackground(color);
