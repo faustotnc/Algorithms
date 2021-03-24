@@ -6,21 +6,30 @@ import java.awt.Color;
 
 public class AStar {
     private Board board;
-
-    private PriorityQueue<Node> openList = new PriorityQueue<>();
-    private ArrayList<Node> closedList = new ArrayList<>();
-
     private boolean foundGoal = false;
 
-    public AStar(Board board) { this.board = board; }
+    // The open list represents nodes that have been discovered,
+    // but are yet to be visited. We use a priority queue (a min-heap)
+    // because that will guarantee the node at the top of the queue
+    // has the lowest f-value, and therefore is the best move.
+    private PriorityQueue<Node> openList = new PriorityQueue<>();
+    // The closed list represents the nodes that we have visited.
+    private ArrayList<Node> closedList = new ArrayList<>();
 
     /**
-     * Do
+     * A new instance of the A* path-finding algorithm.
      * 
-     * @param board
+     * @param board An N*N board used for path-finding.
+     */
+    public AStar(Board board) {
+        this.board = board;
+    }
+
+    /**
+     * Starts the A* path-finding algorithm.
      */
     public void findPath() {
-        System.out.println("Looking for path...");
+        System.out.println("LOOKING FOR PATH...");
 
         // Adds the start node to the open list
         this.computeValues(board.startNode);
@@ -38,21 +47,31 @@ public class AStar {
 
                     // If the node returned by addNeighborsToOpenList()
                     // is not null, then we have found the goal
-                    if (current.equals(board.endNode)) {
-                        System.out.println("FOUND A SOLUTION!!!");
+                    if (current.equals(board.goalNode)) {
+                        System.out.println("FOUND A SOLUTION!!!\n\nSolution Path:");
                         drawFinalPath(current);
                         foundGoal = true;
+
+                        // Do one last repaint and cancel the TimerTask
+                        board.repaint();
                         this.cancel();
                     }
 
                     closedList.add(current);
                     addNeighborsToOpenList(current);
+                    // Color nodes that have already been visited
+                    if (current != board.startNode && current != board.goalNode) {
+                        current.tile().setBackground(Color.decode("#c04e10"));
+                    }
                 }
 
                 // If it has not found a goal, but the open list is now empty, then
                 // cancel the timer and display a message to the user.
                 if (!foundGoal && openList.isEmpty()) {
                     System.out.println("A SOLUTION COULD NOT BE FOUND!!");
+
+                    // Do one last repaint and cancel the TimerTask
+                    board.repaint();
                     this.cancel();
                 }
             }
@@ -63,15 +82,9 @@ public class AStar {
      * Adds the neighbors of the current node to the open list. This function also
      * calculates the G, H, and F values for neighboring nodes.
      * 
-     * @param current
-     * @param board
+     * @param current The current node.
      */
     private void addNeighborsToOpenList(Node current) {
-        // Set the color visited nodes (nodes in the closed list)
-        if (current != board.startNode && current != board.endNode) {
-            board.tiles[current.getRow()][current.getCol()].setBackground(Color.decode("#c04e10"));
-        }
-
         // Gets the neighbors
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
@@ -84,7 +97,7 @@ public class AStar {
                     Node neighbor = board.nodes[nRow][nCol];
 
                     // Skip the node if it is not traversable or it is in the closed list.
-                    if (neighbor.isNotTraversable() || closedList.contains(neighbor))
+                    if (!neighbor.isTraversable() || closedList.contains(neighbor))
                         continue;
 
                     // If the neighbor is not in the open list already,
@@ -96,18 +109,22 @@ public class AStar {
                         openList.add(neighbor);
 
                         // Set color for nodes to be visited.
-                        board.tiles[nRow][nCol].setBackground(Color.decode("#e6a475"));
-                        board.repaint();
+                        neighbor.tile().setBackground(Color.decode("#e6a475"));
                     }
                 }
             }
         }
     }
 
+    /**
+     * Computes the G, H and F values of the neighbors.
+     * 
+     * @param neighbor The node whose values are being computed.
+     */
     private void computeValues(Node neighbor) {
         // Compute the heuristics
-        int h = Math.abs(neighbor.getCol() - board.endNode.getCol());
-        h += Math.abs(neighbor.getRow() - board.endNode.getRow());
+        int h = Math.abs(neighbor.getCol() - board.goalNode.getCol());
+        h += Math.abs(neighbor.getRow() - board.goalNode.getRow());
         h *= 10;
         neighbor.setH(h);
 
@@ -122,17 +139,20 @@ public class AStar {
     }
 
     /**
-     * Recursively colors the tiles of the path from the
-     * start node to the goal node.
+     * Recursively colors the tiles of the path from the goal node to the start
+     * node.
+     * 
      * @param board The board.
-     * @param node The 
+     * @param node  The current node in the recursive step.
      */
     private void drawFinalPath(Node node) {
-        if (node.getParent() == null)
-            return;
+        System.out.println(node);
 
-        Color color = Color.decode((node == board.endNode) ? "#1a7ce5" : "#6db26d");
-        board.tiles[node.getRow()][node.getCol()].setBackground(color);
+        // If there are no more parents to travel through, stop the recursive calls.
+        if (node.getParent() == null) return;
+
+        Color color = Color.decode((node == board.goalNode) ? "#fee22a" : "#6db26d");
+        node.tile().setBackground(color);
         drawFinalPath(node.getParent());
     }
 }

@@ -30,12 +30,10 @@ public class Board extends JFrame {
 
     // Tiles Container
     JPanel container = new JPanel();
-    // Used to change the colors of the tiles later
-    public JPanel[][] tiles;
 
     // Nodes
     public Node startNode = null;
-    public Node endNode = null;
+    public Node goalNode = null;
     public final Node[][] nodes;
 
     public Board(int colCount, int rowCount, int percentBlocked) {
@@ -44,7 +42,6 @@ public class Board extends JFrame {
         this.percentBlocked = percentBlocked;
 
         this.nodes = new Node[rowCount][colCount];
-        tiles = new JPanel[rowCount][colCount];
 
         // Three standard sizes for the board
         if (rowCount >= 18 || colCount >= 18) {
@@ -61,6 +58,14 @@ public class Board extends JFrame {
     }
 
     /**
+     * Shows the board window.
+     */
+    public void showBoard(AStar pathFinder) {
+        drawBoard(pathFinder);
+        setVisible(true);
+    }
+
+    /**
      * Draws the board in a window as a grid of NxN tiles, with the queens at their
      * respective position for the current state of the board.
      */
@@ -69,7 +74,7 @@ public class Board extends JFrame {
             for (int col = 0; col < colCount; col++) {
                 JPanel tile = new JPanel();
 
-                Node node = new Node(row, col);
+                Node node = new Node(row, col, tile);
                 nodes[row][col] = node;
 
                 // Draws the tiles
@@ -87,25 +92,24 @@ public class Board extends JFrame {
 
                 // Adds the tile to the board
                 container.add(tile);
-                tiles[row][col] = tile;
             }
         }
 
-        // Marks a certain percentage of tiles as not blocked
+        // Marks a certain percentage of tiles as blocked
         double maxBlocked = (rowCount * colCount) * ((float) this.percentBlocked / 100);
         ArrayList<Integer> chosen = new ArrayList<>();
         while (chosen.size() < maxBlocked) {
             int pos = rand.nextInt(rowCount * colCount);
-            if (chosen.contains(pos))
-                continue;
+            if (chosen.contains(pos)) continue;
 
             int col = pos % colCount;
             int row = (int) (pos / colCount);
+            Node node = nodes[row][col];
 
-            tiles[row][col].setBackground(Color.decode("#222222"));
-            tiles[row][col].removeMouseListener(tiles[row][col].getMouseListeners()[0]);
+            node.tile().setBackground(Color.decode("#222222"));
+            node.tile().removeMouseListener(node.tile().getMouseListeners()[0]);
+            node.setNotTraversable();
 
-            nodes[row][col].setNotTraversable();
             chosen.add(pos);
         }
     }
@@ -115,26 +119,25 @@ public class Board extends JFrame {
      * chosen. After clicking the end tile, the A* algorithm will start looking for
      * a path.
      * 
-     * @param tile The current tile.
-     * @param n    The node associated with the tile.
+     * @param tile       The current tile.
+     * @param n          The node associated with the tile.
+     * @param pathFinder An instance of the A* algorithm
      */
     private void AddTileMouseEvent(JPanel tile, Node n, AStar pathFinder) {
         MouseAdapter listener = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (startNode == null) {
-                    tile.setBackground(Color.decode("#2945a1"));
-                    startNode = n;
-                    repaint();
-                } else if (startNode != null && endNode == null) {
                     tile.setBackground(Color.decode("#1a7ce5"));
-                    endNode = n;
-                    repaint();
+                    startNode = n;
+                } else if (startNode != null && goalNode == null) {
+                    tile.setBackground(Color.decode("#fee22a"));
+                    goalNode = n;
                 }
 
                 // After the start and goal nodes are selected, we start
                 // the A* algorithm to look for the path
-                if (startNode != null && endNode != null && !hasStarted) {
+                if (startNode != null && goalNode != null && !hasStarted) {
                     pathFinder.findPath();
                     hasStarted = true;
                 }
@@ -142,13 +145,5 @@ public class Board extends JFrame {
         };
 
         tile.addMouseListener(listener);
-    }
-
-    /**
-     * Shows the board window.
-     */
-    public void showBoard(AStar pathFinder) {
-        drawBoard(pathFinder);
-        setVisible(true);
     }
 }
