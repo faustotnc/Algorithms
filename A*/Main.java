@@ -1,6 +1,11 @@
+
 public class Main {
     public static void main(String[] args) {
-        Board board = new Board(75, 75, 40);
+        // ************************************************
+        // ********* Read the README.md file for more info
+        // ************************************************
+
+        Board board = new Board(70, 70, 40);
         AStar pathFinder = new AStar(board);
 
         board.showBoard(pathFinder);

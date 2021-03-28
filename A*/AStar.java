@@ -6,17 +6,18 @@ import java.awt.Color;
 
 public class AStar {
     private Board board;
-    private boolean foundGoal = false;
+    public boolean foundGoal = false;
+    public boolean canSelect = true;
 
     // The open list represents nodes that have been discovered,
     // but are yet to be visited. We use a priority queue (a min-heap)
     // because that will guarantee the node at the top of the queue
     // has the lowest f-value, and therefore is the best move.
-    private PriorityQueue<Node> openList = new PriorityQueue<>();
+    public PriorityQueue<Node> openList = new PriorityQueue<>();
     // The closed list represents the nodes that we have visited.
-    private ArrayList<Node> closedList = new ArrayList<>();
+    public ArrayList<Node> closedList = new ArrayList<>();
     // The final path generated once the search is done
-    private ArrayList<Node> finalPath = new ArrayList<>();
+    public ArrayList<Node> finalPath = new ArrayList<>();
 
     /**
      * A new instance of the A* path-finding algorithm.
@@ -32,6 +33,7 @@ public class AStar {
      */
     public void findPath() {
         System.out.println("LOOKING FOR PATH...");
+        this.canSelect = false;
 
         // Adds the start node to the open list
         this.computeValues(board.startNode);
@@ -65,6 +67,7 @@ public class AStar {
                         // Do one last repaint and cancel the TimerTask
                         board.repaint();
                         this.cancel();
+                        canSelect = true;
                     }
 
                     closedList.add(current);
@@ -83,6 +86,7 @@ public class AStar {
                     // Do one last repaint and cancel the TimerTask
                     board.repaint();
                     this.cancel();
+                    canSelect = true;
                 }
             }
         }, 0, 100);

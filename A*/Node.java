@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 /**
@@ -132,6 +134,7 @@ public class Node implements Comparable<Node> {
 
     /**
      * Gets the tile associated with this node.
+     * 
      * @return The node's tile.
      */
     public JPanel tile() {
@@ -172,5 +175,15 @@ public class Node implements Comparable<Node> {
      */
     public String toString() {
         return "Node [" + row + ", " + col + "] (F: " + f + ") – G: " + g + " H: " + h;
+    }
+
+    /**
+     * Resets a node's values, as well as the tile's background color.
+     */
+    public void reset() {
+        this.setG(0);
+        this.setH(0);
+        this.setParent(null);
+        this.tile().setBackground(Color.decode("#eeeeee"));
     }
 }

@@ -43,7 +43,7 @@ public class Board extends JFrame {
 
         this.nodes = new Node[rowCount][colCount];
 
-        // Three standard sizes for the board
+        // Standard size for the board
         if (rowCount >= 18 || colCount >= 18) {
             tileSize = (int) ((18 * tileSize) / Math.max(rowCount, colCount));
         }
@@ -100,7 +100,8 @@ public class Board extends JFrame {
         ArrayList<Integer> chosen = new ArrayList<>();
         while (chosen.size() < maxBlocked) {
             int pos = rand.nextInt(rowCount * colCount);
-            if (chosen.contains(pos)) continue;
+            if (chosen.contains(pos))
+                continue;
 
             int col = pos % colCount;
             int row = (int) (pos / colCount);
@@ -141,9 +142,42 @@ public class Board extends JFrame {
                     pathFinder.findPath();
                     hasStarted = true;
                 }
+
+                // If a path has already been found (or there was no solution),
+                // the user can click any tile again to clear the board and select
+                // a new star and end node.
+                if (pathFinder.canSelect && startNode != null && goalNode != null) {
+                    startNode = null;
+                    goalNode = null;
+                    hasStarted = false;
+                    pathFinder.foundGoal = false;
+                    clearBoard(pathFinder);
+                    tile.setBackground(Color.decode("#1a7ce5"));
+                    startNode = n;
+                }
             }
         };
 
         tile.addMouseListener(listener);
+    }
+
+    /**
+     * Clears the board.
+     * @param pathFinder An instance to the pathFinder class.
+     */
+    private void clearBoard(AStar pathFinder) {
+        for (Node node : pathFinder.openList)
+            node.reset();
+        pathFinder.openList.clear();
+
+        for (Node node : pathFinder.closedList)
+            node.reset();
+        pathFinder.closedList.clear();
+
+        for (Node node : pathFinder.finalPath)
+            node.reset();
+        pathFinder.finalPath.clear();
+
+        repaint();
     }
 }
