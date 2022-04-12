@@ -11,9 +11,9 @@ Here is an example of how an image could look after being cropped to 1024x1024:
 
 |Original|Cropped to 1024x1024|
 |--|--|
-|![Original Image](./original.jpeg) Size: (3024, 4032)|![Cropped 1024x1024](./cropped-1024.jpeg) Size: (1024, 1025)|
+|![Original Image](./original.jpeg) <br/> Size: (3024, 4032)|![Cropped 1024x1024](./cropped-1024.jpeg) <br/> Size: (1024, 1025)|
 
 And here is what the model would see after resizing the image dowm to 320x320:
 |Original Resized to 320x320|Cropped to 1024x1024 and Resized to 320x320|
 |--|--|
-|![Original Resized to 320x320](./original-resized-320.jpeg) Size: (320, 320)|![Cropped Resized to 320x320](./cropped-resized-320.jpeg) Size: (320, 320)|
+|![Original Resized to 320x320](./original-resized-320.jpeg) <br/> Size: (320, 320)|![Cropped Resized to 320x320](./cropped-resized-320.jpeg) <br/> Size: (320, 320)|
